@@ -1,262 +1,130 @@
 <!doctype html>
 <html lang="pt-BR">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Entrar</title>
-</head>
 
-<body>
     <style>
-        :root {
-            --green: #6e8549;
-            --green-dark: #4f5f33;
-            --text: #1c1f17;
-            --text-soft: #3f4437;
-            --glass: rgba(255, 255, 255, 0.28);
-            --glass-border: rgba(255, 255, 255, 0.45);
-            --field: rgba(255, 255, 255, 0.7);
-            --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        background-color: black;
+        background-image: url(imagens/background.gif);
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
 
-        html,
-        body {
-            min-height: 100%;
-        }
+      .box-form {
+        width: 100%;
+        max-width: 380px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+      }
 
-        body {
-            min-height: 100vh;
-            min-height: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            font-family: var(--font);
-            color: var(--text);
-            background-color: #3b4a28;
-            /* aparece enquanto a imagem carrega */
-            background-image: url(imagens/background.gif);
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-        }
+      .form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
 
-        /* Cartão */
-        .box-form {
-            width: 100%;
-            max-width: 380px;
-            padding: 36px 32px;
-            display: flex;
-            flex-direction: column;
-            gap: 28px;
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
 
-            background-color: var(--glass);
-            -webkit-backdrop-filter: blur(16px) saturate(160%);
-            backdrop-filter: blur(16px) saturate(160%);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-        }
+      input {
+        padding: 12px;
+        border: 2px solid #6e8549;
+        border-radius: 6px;
+      }
 
-        .header-form {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+      .btn-form {
+        padding: 12px;
+        color: white;
+        background: #4f5f33;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
 
-        .title-form {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-        }
-
-        .paragraph-form {
-            font-size: 15px;
-            line-height: 1.5;
-            color: var(--text-soft);
-        }
-
-        /* Formulário */
-        .form {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .field {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .label-form {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .input-form {
-            width: 100%;
-            height: 44px;
-            padding: 0 12px;
-            font: inherit;
-            font-size: 16px;
-            /* evita zoom automático no iOS */
-            color: var(--text);
-            background-color: var(--field);
-            border: 2px solid var(--green);
-            border-radius: 6px;
-            transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
-        }
-
-        .input-form::placeholder {
-            color: #6b7061;
-        }
-
-        .input-form:focus {
-            outline: none;
-            background-color: #fff;
-            border-color: var(--green-dark);
-            box-shadow: 0 0 0 3px rgba(110, 133, 73, 0.0);
-        }
-
-        /* Opções */
-        .options-form {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            font-size: 14px;
-        }
-
-        .remember-form {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .remember-form input {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--green);
-            cursor: pointer;
-        }
-
-        .forgot-link {
-            color: var(--green-dark);
-            font-weight: 600;
-            text-decoration: underline;
-            text-underline-offset: 3px;
-        }
-
-        .forgot-link:hover {
-            color: var(--text);
-        }
-
-        .forgot-link:focus-visible,
-        .remember-form input:focus-visible,
-        .btn-form:focus-visible {
-            outline: 3px solid #fff;
-            outline-offset: 2px;
-            box-shadow: 0 0 0 5px var(--green-dark);
-            border-radius: 4px;
-        }
-
-        /* Botão */
-        .btn-form {
-            height: 48px;
-            width: 100%;
-            font: inherit;
-            font-size: 16px;
-            font-weight: 600;
-            color: #fff;
-            background-color: var(--green-dark);
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.15s, transform 0.1s;
-        }
-
-        .btn-form:hover {
-            background-color: var(--green);
-        }
-
-        .btn-form:active {
-            transform: translateY(1px);
-        }
-
-        @media (max-width: 400px) {
-            .box-form {
-                padding: 28px 20px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                transition: none !important;
-            }
-        }
+      .btn-form:hover {
+        background: #6e8549;
+      }
     </style>
-    <main class="box-form">
-        <header class="header-form">
-            <h1 class="title-form">Criar conta</h1>
-            <p class="paragraph-form">Preencha os campos para se cadastrar.</p>
-        </header>
+  </head>
 
-        <form class="form" action="#" method="post">
+  <body>
+    <div class="box-form">
+      <div>
+        <h1>Cadastro</h1>
+        <p>Crie uma conta para continuar.</p>
+      </div>
 
-            <div class="field">
-                <label class="label-form" for="name">Nome</label>
-                <input class="input-form" id="name" name="name" type="text" placeholder="Digite seu nome"
-                    autocomplete="username" required />
-            </div>
+      <div class="form">
+        <div class="field">
+          <p>Nome</p>
+          <input id="name" type="text" placeholder="Digite seu nome" />
+        </div>
 
-            <div class="field">
-                <label class="label-form" for="user">Usuário</label>
-                <input class="input-form" id="user" name="user" type="text" placeholder="Digite seu usuário"
-                    autocomplete="username" required />
-            </div>
+        <div class="field">
+          <p>Usuário</p>
+          <input id="user" type="text" placeholder="Digite sua senha" />
+        </div>
 
-            <div class="field">
-                <label class="label-form" for="password">Senha</label>
-                <input class="input-form" id="password" name="password" type="password" placeholder="Digite sua senha"
-                    autocomplete="current-password" required />
-            </div>
+        <div class="field">
+          <p>Senha</p>
+          <input id="password" type="password" placeholder="Digite sua senha" />
+        </div>
 
-            <div class="options-form">
-                <label class="remember-form">
-                    <input type="checkbox" name="remember" />
-                    <span>Li e aceito os <a href="#">termos de uso</a>.</span>
-                </label>
-            </div>
+        <div>
+          <p><input type="checkbox" /> Lembrar da senha</p>
+        </div>
 
-            <button class="btn-form" type="button" onclick="enviar()">Cadastrar</button>
-        </form>
-    </main>
+        <button class="btn-form" onclick="enviar()">Cadastrar</button>
+
+        <div>
+          <p style="padding: 4px">
+            Já possui uma conta?
+            <a href="index.html" style="color: #4f5f33; text-decoration: none"
+              >Clique aqui.</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
     <script>
-        function enviar() {
-            var nome = document.querySelector('#user').value;
-            var usuario = document.querySelector('#name').value;
-            var senha = document.querySelector('#password').value;
+      function enviar() {
+        const usuario = document.querySelector('#user').value;
+        const nome = document.querySelector('#name').value;
+        const senha = document.querySelector('#password').value;
 
-            fetch(`http://localhost:3000/cadastro/${nome}/${usuario}/${senha}`)
-                .then(response => response.text())
-                .then(data => {
-                    if ("1") alert("Sucesso!")
-                    else alert("Não foi posivel realizar o cadastro. Tente novamente mais tarde.")
-                })
-        }
+        fetch(`http://localhost:3000/cadastro/${usuario}/${nome}/${senha}`)
+          .then((resposta) => resposta.text())
+          .then((data) => {
+            if (data == '1') {
+              alert('Conta criada com sucesso!');
+            } else {
+              alert('Erro ao criar a conta. Tente novamente.');
+            }
+          })
+          .catch(() => alert('Erro ao conectar com o servidor.'));
+      }
     </script>
-</body>
-
+  </body>
 </html>

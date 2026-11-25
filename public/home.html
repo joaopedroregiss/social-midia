@@ -1,0 +1,213 @@
+<!doctype html>
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Início</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-family: Arial, sans-serif;
+        background: black url('imagens/background.gif') center/cover no-repeat;
+        padding: 20px;
+      }
+      .container {
+        width: 100%;
+        max-width: 450px;
+        padding: 35px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      }
+      .header {
+        text-align: center;
+      }
+      .title {
+        font-size: 28px;
+        color: #1c1f17;
+        margin-bottom: 10px;
+      }
+      .subtitle {
+        font-size: 16px;
+        color: #3f4437;
+      }
+      .form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .label {
+        font-weight: bold;
+        color: #1c1f17;
+      }
+      .input {
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
+        border: 2px solid #6e8549;
+        border-radius: 6px;
+        outline: none;
+      }
+      .input:focus {
+        border-color: #4f5f33;
+      }
+      .button {
+        padding: 12px;
+        margin-top: 10px;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        background: #4f5f33;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .button:hover {
+        background: #6e8549;
+      }
+
+      /* CSS das posstagens */
+
+      #postagens {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+        width: 100%;
+        max-width: 450px;
+      }
+
+      .postagem {
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        overflow-wrap: anywhere;
+      }
+
+      .postagem h3 {
+        color: #4f5f33;
+        font-size: 17px;
+        margin-bottom: 10px;
+      }
+
+      .postagem p {
+        color: #1c1f17;
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 12px;
+      }
+
+      .postagem small {
+        color: #666;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 class="title" id="greeting"></h1>
+        <p class="subtitle">O que tá pegando?</p>
+      </div>
+
+      <div class="form">
+        <p class="label">Escreva aqui:</p>
+
+        <input
+          class="input"
+          id="message"
+          type="text"
+          placeholder="Escreva aqui algo..."
+        />
+
+        <button class="button" onclick="enviar()">Enviar</button>
+      </div>
+    </div>
+    <div id="postagens"></div>
+    <script>
+      function carregarPostagens() {
+        fetch('http://localhost:3000/postagens')
+          .then((resposta) => resposta.json())
+          .then((dados) => {
+            const div = document.querySelector('#postagens');
+
+            div.innerHTML = '';
+
+            dados.forEach((post) => {
+              const postagem = document.createElement('div');
+              postagem.className = 'postagem';
+
+              const usuario = document.createElement('h3');
+              usuario.textContent = post.USUARIO;
+
+              const mensagem = document.createElement('p');
+              mensagem.textContent = post.MENSAGEM;
+
+              const data = document.createElement('small');
+              data.textContent = new Date(post.DATA).toLocaleString('pt-BR', {
+                timeZone: 'America/Sao_Paulo',
+              });
+
+              postagem.appendChild(usuario);
+              postagem.appendChild(mensagem);
+              postagem.appendChild(data);
+
+              div.appendChild(postagem);
+            });
+          })
+          .catch((erro) => console.log('Erro:', erro));
+      }
+
+      setInterval(carregarPostagens, 200);
+
+      document.querySelector('#greeting').innerText =
+        'Olá, ' + localStorage.getItem('name');
+
+      function enviar() {
+        const usuario = localStorage.getItem('name');
+        const mensagem = document.querySelector('#message').value;
+        const data = new Date().toISOString();
+
+        if (mensagem.trim() === '') {
+          alert('Digite uma mensagem!');
+          return;
+        }
+
+        fetch(
+          `http://localhost:3000/postagens/${usuario}/${mensagem}/${data}`,
+          {
+            method: 'POST',
+          },
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (dados.sucesso === true) {
+              alert('Ènviado');
+              // carregarPostagens();
+            } else {
+              alert('Erro ao enviar.');
+            }
+          })
+          .catch((erro) => console.log(erro));
+      }
+    </script>
+  </body>
+</html>
